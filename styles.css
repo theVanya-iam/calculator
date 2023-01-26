@@ -1,0 +1,18 @@
+*{
+    background-color: white;
+    font: Roboto;
+}
+
+.calc_controls{
+    display: flex;
+    width: 1000px;
+    height: auto;
+}
+
+.button{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(221, 135, 23);
+    border-style: dotted;
+    text-align: center;
+}
