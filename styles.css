@@ -3,16 +3,37 @@
     font: Roboto;
 }
 
-.calc_controls{
+#calc{
     display: flex;
-    width: 1000px;
-    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    align-self: center;
 }
 
-.button{
-    width: 100px;
-    height: 100px;
-    background-color: rgb(221, 135, 23);
-    border-style: dotted;
-    text-align: center;
+#calc_screen{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    grid-column: 1 / -1;
+    color: black;
+    background-color: gainsboro;
+    font-size: 4em;
+    padding: 10px;
+}
+
+#calc_body{
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(100px, auto) repeat(5, 80px);
+}
+
+button{
+    background-color: #4CAF50; /* Green */
+    border: solid 1px white;
+    color: white;
+}
+
+#zero{
+    grid-column: span 2;
 }
