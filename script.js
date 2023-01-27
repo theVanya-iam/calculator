@@ -21,9 +21,8 @@ function clearScreen(){
 }
 
 function operate(x, y, operator){
-    operator = selected_operator;
-    x = first_operand;
-    y = second_operand;
+    x = parseInt(x);
+    y= parseInt(y);
     if (operator == '+'){
         return x + y;
     } else if (operator == '-'){
@@ -39,42 +38,50 @@ function operate(x, y, operator){
 
 control_clear.addEventListener('click', () => clearScreen());
 control_opposite.addEventListener('click', () => screen.textContent = -(screen.textContent));
-control_percent.addEventListener('click', () => screen.textContent = (screen.textContent) * 0.01);
-control_float.addEventListener('click', () => floatPoint());
+control_percent.addEventListener('click', () => screen.textContent = parseInt(screen.textContent) * 0.01);
+//control_float.addEventListener('click', () => floatPoint());
 
-function operations(i){
+function operatorSelect(i){
     if (buttons[i].textContent == '/'){
-        screen.textContent = screen.textContent + '/';
         selected_operator = '/';
     } else if (buttons[i].textContent == '*'){
-        screen.textContent = screen.textContent + '*';
         selected_operator = '*';
     } else if (buttons[i].textContent == '+'){
-        screen.textContent = screen.textContent + '+';
         selected_operator = '+';
     } else if (buttons[i].textContent == '-'){
-        screen.textContent = screen.textContent + '-';
         selected_operator = '-';
     }
 }
 
 function numOperations(i){
-    if (selected_operator === 0){
-        if (display_value === '0' || display_value === 0){
-            display_value = buttons[i].textContent;
-        } else if (first_operand == true) {
-            display_value += buttons[i].textContent;
+    if (!selected_operator){
+        if (!first_operand){
+            first_operand = buttons[i].textContent;
+        } else {
+            first_operand += buttons[i].textContent;
         }        
-    } else if (first_operand == true && selected_operator == true){
+    } else if (!second_operand){
         second_operand = buttons[i].textContent;
-        display_value = first_operand + ' ' + `${selected_operator}` + ' ' + second_operand;
-        return;  
+    } else{
+        second_operand += buttons[i].textContent;
     }
 }
 
 function updateScreen(){
+    if (display_value == 0 && first_operand){
+        display_value = first_operand;
+    } else if (!selected_operator){
+        display_value = first_operand;
+        console.log({display_value});
+    } else if (selected_operator && !second_operand){
+        display_value += selected_operator;
+        console.log({display_value});
+    } else if (second_operand){
+        display_value = first_operand + selected_operator + second_operand;
+        console.log({display_value});
+    }
     screen.textContent = display_value;
-    
+    console.log(screen.textContent);
 }
 
 for (let i=0; i < buttons.length; i++){
@@ -85,14 +92,20 @@ for (let i=0; i < buttons.length; i++){
         });
     } else if (buttons[i].classList.contains('operator')){
         buttons[i].addEventListener('click', () => {
-            operations(i)
-            updateScreen()
+            operatorSelect(i)
+            updateScreen();
         });
     }
 }
 
 control_equal.addEventListener('click', () => {
-    operate(first_operand, second_operand, selected_operator)
-    updateScreen();
+    if (first_operand && second_operand && selected_operator){
+        screen.textContent = operate(first_operand, second_operand, selected_operator);
+        first_operand = screen.textContent;
+        display_value = 0;
+        selected_operator = 0;
+        second_operand = 0;
+        console.log({first_operand, second_operand, selected_operator})
+    }
     return;
 });
