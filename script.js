@@ -21,8 +21,8 @@ function clearScreen(){
 }
 
 function operate(x, y, operator){
-    x = parseInt(x);
-    y= parseInt(y);
+    x = parseFloat(x);
+    y= parseFloat(y);
     if (operator == '+'){
         return x + y;
     } else if (operator == '-'){
@@ -36,22 +36,37 @@ function operate(x, y, operator){
     }
 }
 
+function floatPoint(){
+    if (display_value.includes('.')){
+        return;
+    } else if (display_value == first_operand){
+        first_operand += '.';
+        display_value += '.';
+        screen.textContent = display_value;
+    } else if (display_value == second_operand){
+        second_operand += '.';
+        display_value += '.';
+        screen.textContent = display_value;
+    }
+}
+
 control_clear.addEventListener('click', () => clearScreen());
 control_opposite.addEventListener('click', () => screen.textContent = -(screen.textContent));
 control_percent.addEventListener('click', () => screen.textContent = parseFloat(screen.textContent) * 0.01);
-//control_float.addEventListener('click', () => floatPoint());
+control_float.addEventListener('click', () => floatPoint());
 
 function operatorSelect(i){
-    if (buttons[i].textContent == '/'){
-        selected_operator = '/';
-    } else if (buttons[i].textContent == '*'){
-        selected_operator = '*';
-    } else if (buttons[i].textContent == '+'){
-        selected_operator = '+';
-    } else if (buttons[i].textContent == '-'){
-        selected_operator = '-';
+    if (first_operand){
+        if (buttons[i].textContent == '/'){
+            selected_operator = '/';
+        } else if (buttons[i].textContent == '*'){
+            selected_operator = '*';
+        } else if (buttons[i].textContent == '+'){
+            selected_operator = '+';
+        } else if (buttons[i].textContent == '-'){
+            selected_operator = '-';
+        }
     }
-    
 }
 
 function numOperations(i){
@@ -107,3 +122,10 @@ control_equal.addEventListener('click', () => {
         updateScreen();
     }
 });
+
+// add keyboard support ( '+' ,'-' ,'/ ','. ',' = ' ,'del' etc.)
+// add 'backspace' button so the user can undo if they click the wrong button
+// add decimal point function
+// round decimals
+// add solving procedure as you insert more numbers in calculator
+// display a snarky message if user tries to divide by 0
