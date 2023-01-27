@@ -28,7 +28,11 @@ function operate(x, y, operator){
     } else if (operator == '-'){
         return x - y;
     } else if (operator == '/'){
-        return x / y;
+        if (y === 0){
+            return 'lol no';
+        } else {
+            return x / y;
+        }
     } else if (operator == '*'){
         return x * y;
     } else {
@@ -48,6 +52,10 @@ function floatPoint(){
         display_value += '.';
         screen.textContent = display_value;
     }
+}
+
+function roundMe(num, places){
+    return parseFloat(Math.round(num + 'e' + places) + 'e-' + places);
 }
 
 control_clear.addEventListener('click', () => clearScreen());
@@ -99,7 +107,7 @@ function updateScreen(){
 }
 
 for (let i=0; i < buttons.length; i++){
-    if (buttons[i].classList.contains('number')){
+    if (buttons[i].classList.contains('number', 'zero')){
         buttons[i].addEventListener('click', () => {
             numOperations(i);
             updateScreen();
@@ -115,7 +123,7 @@ for (let i=0; i < buttons.length; i++){
 control_equal.addEventListener('click', () => {
     console.log({selected_operator});
     if (first_operand && second_operand && selected_operator){
-        screen.textContent = operate(first_operand, second_operand, selected_operator);
+        screen.textContent = roundMe(operate(first_operand, second_operand, selected_operator), 2);
         first_operand = screen.textContent;
         selected_operator = 0;
         second_operand = 0;
@@ -125,7 +133,4 @@ control_equal.addEventListener('click', () => {
 
 // add keyboard support ( '+' ,'-' ,'/ ','. ',' = ' ,'del' etc.)
 // add 'backspace' button so the user can undo if they click the wrong button
-// add decimal point function
-// round decimals
 // add solving procedure as you insert more numbers in calculator
-// display a snarky message if user tries to divide by 0
