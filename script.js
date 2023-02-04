@@ -81,7 +81,7 @@ function changeSign(){
     updateScreen();
 }
 
-function addPercent(num){
+function addPercent(){
     if (first_operand != null && selected_operator === null){
         first_operand = first_operand / 100;
         first_operand = first_operand.toString();
@@ -109,10 +109,14 @@ function operatorSelect(i){
             selected_operator = '-';
         }
         updateScreen();
-    }
-    else { 
+    } else if (first_operand && second_operand && selected_operator){ 
+        first_operand = roundMe(operate(first_operand, second_operand, selected_operator), 2);
+        selected_operator = buttons[i].textContent;
+        second_operand = null;
+        updateScreen();
+    } else {
         return;
-    }   
+    }
 }
 
 function selectOperand(i){
@@ -169,4 +173,3 @@ control_equal.addEventListener('click', () => {
 
 // add keyboard support ( '+' ,'-' ,'/ ','. ',' = ' ,'del' etc.)
 // add 'backspace' button so the user can undo if they click the wrong button
-// add solving procedure as you insert more numbers in calculator
