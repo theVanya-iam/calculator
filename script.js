@@ -82,8 +82,13 @@ function changeSign(){
 }
 
 function addPercent(num){
-
-    display_value = (num * -1).toString();
+    if (first_operand != null && selected_operator === null){
+        first_operand = first_operand / 100;
+        first_operand = first_operand.toString();
+    } else if (second_operand != null && selected_operator){
+        second_operand = second_operand / 100;
+        second_operand = second_operand.toString();
+    }
     updateScreen();
 }
 
