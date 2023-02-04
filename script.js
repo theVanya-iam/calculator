@@ -20,6 +20,7 @@ function clearScreen(){
     screen.textContent = 0;
 }
 
+// mathematical operations are done here
 function operate(x, y, operator){
     x = parseFloat(x);
     y= parseFloat(y);
@@ -160,7 +161,7 @@ for (let i=0; i < buttons.length; i++){
     }
 }
 
-control_equal.addEventListener('click', () => {
+function calculate(){
     if (second_operand == 0){
         screen.textContent = 'Oh. Not again.'
     } else if (first_operand && second_operand && selected_operator){
@@ -169,7 +170,75 @@ control_equal.addEventListener('click', () => {
         selected_operator = null;
         second_operand = null;
     }
-});
+}
 
+control_equal.addEventListener('click', () => calculate());
+
+document.addEventListener('keypress', (e) => {
+    let patternForNumbers = /[0-9]/g;
+    let patternForOperators = /[+\-*\/]/g;
+    if (e.key.match(patternForNumbers)){
+        e.preventDefault();
+        if (first_operand === null){
+            first_operand = e.key
+        } else if (selected_operator === null && second_operand === null) {
+            first_operand += e.key
+        } else if (selected_operator != null && second_operand === null){
+            second_operand = e.key
+        } else {
+            second_operand += e.key
+        }
+    }
+    if (e.key === '.'){
+        e.preventDefault();
+        floatPoint();
+    }
+    if (e.key.match(patternForOperators)){
+        e.preventDefault();
+        if (first_operand && second_operand === null){
+            if (e.key == '/'){
+                selected_operator = '/';
+            } else if (e.key == '*'){
+                selected_operator = '*';
+            } else if (e.key == '+'){
+                selected_operator = '+';
+            } else if (e.key == '-'){
+                selected_operator = '-';
+            }
+            updateScreen();
+        } else if (first_operand && second_operand && selected_operator){ 
+            first_operand = roundMe(operate(first_operand, second_operand, selected_operator), 2);
+            selected_operator = e.key;
+            second_operand = null;
+            updateScreen();
+        } else {
+            return;
+        }
+    }
+    if (e.key === 'Enter' || e.key === '='){
+        e.preventDefault();
+        calculate();
+    }
+    if (e.key === 'Backspace'){ 
+        if (first_operand === null){
+            return;
+        } else if (selected_operator === null && second_operand === null) {
+            if (first_operand.length === 1){
+                console.log('i was here')
+                first_operand = null;
+            } else {
+                first_operand = first_operand.slice(0, first_operand.length - 1);
+            }
+        } else if (selected_operator != null && second_operand != null){
+            if (second_operand.length === 1){
+                second_operand = null;
+            } else {
+                second_operand = second_operand.slice(0, second_operand.length - 1);
+            }
+        }
+    }
+    updateScreen();
+    console.log({first_operand, second_operand});
+})
 // add keyboard support ( '+' ,'-' ,'/ ','. ',' = ' ,'del' etc.)
 // add 'backspace' button so the user can undo if they click the wrong button
