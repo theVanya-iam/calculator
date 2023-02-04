@@ -70,12 +70,19 @@ function roundMe(num, places){
     return parseFloat(Math.round(num + 'e' + places) + 'e-' + places);
 }
 
-function changeSign(num){
-    display_value = (num * -1).toString();
+function changeSign(){
+    if (first_operand != null && selected_operator === null){
+        first_operand = first_operand * -1;
+        first_operand = first_operand.toString();
+    } else if (second_operand != null && selected_operator){
+        second_operand = second_operand * -1;
+        second_operand = second_operand.toString();
+    }
     updateScreen();
 }
 
 function addPercent(num){
+
     display_value = (num * -1).toString();
     updateScreen();
 }
@@ -128,7 +135,6 @@ function updateScreen(){
         display_value = first_operand + selected_operator + second_operand;
     }
     screen.textContent = display_value;
-    console.log({display_value});
 }
 
 for (let i=0; i < buttons.length; i++){
