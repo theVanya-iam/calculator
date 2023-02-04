@@ -174,6 +174,7 @@ function calculate(){
 
 control_equal.addEventListener('click', () => calculate());
 
+// keyboard support of unsophisticated nature
 document.addEventListener('keypress', (e) => {
     let patternForNumbers = /[0-9]/g;
     let patternForOperators = /[+\-*\/]/g;
@@ -220,6 +221,7 @@ document.addEventListener('keypress', (e) => {
         calculate();
     }
     if (e.key === 'Backspace'){ 
+        e.preventDefault();
         if (first_operand === null){
             return;
         } else if (selected_operator === null && second_operand === null) {
@@ -240,5 +242,3 @@ document.addEventListener('keypress', (e) => {
     updateScreen();
     console.log({first_operand, second_operand});
 })
-// add keyboard support ( '+' ,'-' ,'/ ','. ',' = ' ,'del' etc.)
-// add 'backspace' button so the user can undo if they click the wrong button
